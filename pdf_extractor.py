@@ -5,12 +5,12 @@ from pdf_contents import Page, Block, Line, Content, PDFContents
 
 
 class PDFExtractor:
-    def __init__(self, pdf_file_path: str):
+    def __init__(self, pdf_file_path: str) -> None:
         """
-        Open the PDF and initialize caches.
+        Load the PDF file and prepare extraction caches.
 
         Args:
-            file_path (str): Path to the PDF file.
+            pdf_file_path (str): Path to the PDF file.
         """
 
         self.__pdf_file_path = pdf_file_path
@@ -21,15 +21,22 @@ class PDFExtractor:
     @property
     def pdf_file_path(self) -> str:
         """
-        Return the PDF file path.
+        Return the stored PDF path.
 
         Returns:
-            str: PDF file path.
+            str: Input PDF location.
         """
 
         return self.__pdf_file_path
     
-    def extract_contents(self):
+    def extract_contents(self) -> PDFContents:
+        """
+        Parse the PDF into structured content objects.
+
+        Returns:
+            PDFContents: All text spans wrapped in helper classes.
+        """
+
         doc = self.__doc
 
         contents = []
@@ -116,13 +123,13 @@ class PDFExtractor:
         use_cache: bool = True
     ) -> list[str]:
         """
-        Extract raw text lines from the PDF.
+        Collect raw text lines from the PDF, optionally using cache.
 
         Args:
-            use_cache (bool): Whether to reuse cached results.
+            use_cache (bool): Reuse previously extracted texts.
 
         Returns:
-            list[str]: Text lines.
+            list[str]: Non-empty text lines.
         """
 
         if use_cache and self.__texts_cache:
@@ -149,7 +156,7 @@ class PDFExtractor:
         Open the PDF document and authenticate if needed.
 
         Returns:
-            fitz.Document: Opened PDF document.
+            fitz.Document: Loaded document object.
         """
 
         file_path = self.__pdf_file_path
@@ -165,10 +172,10 @@ class PDFExtractor:
     
     def _authenticate_doc(self, doc: fitz.Document) -> fitz.Document:
         """
-        Authenticate a password-protected PDF.
+        Unlock a password-protected PDF using the filename token.
 
         Args:
-            doc (fitz.Document): PDF document.
+            doc (fitz.Document): Document requiring authentication.
 
         Returns:
             fitz.Document: Authenticated PDF document.
@@ -188,13 +195,13 @@ class PDFExtractor:
     @staticmethod
     def _format_text(text: str) -> str | None:
         """
-        Normalize text by stripping whitespace and control characters.
+        Normalize span text by trimming and collapsing spacing.
 
         Args:
-            text (str): Text to normalize.
+            text (str): Raw span text.
 
         Returns:
-            str: Normalized text.
+            str | None: Cleaned text or None when empty.
         """
 
         if not text:
