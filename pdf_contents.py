@@ -1,67 +1,28 @@
+from dataclasses import dataclass
+
 import fitz
 from typing import Any
 from operator import attrgetter
 
 
+@dataclass(slots=True)
 class Page:
-    def __init__(
-        self, 
-        fitz_page: fitz.Page, 
-        number: int, 
-        width: float, 
-        height: float
-    ) -> None:
-        """
-        Store basic page data from the source document.
+    """
+    Store basic page data from the source document.
 
-        Args:
-            fitz_page (fitz.Page): Page object from PyMuPDF.
-            number (int): Zero-based page index.
-            width (float): Page width in points.
-            height (float): Page height in points.
-        """
+    Attributes:
+        fitz_page (fitz.Page): Page object from PyMuPDF.
+        number (int): Zero-based page index.
+        width (float): Page width in points.
+        height (float): Page height in points.
+    """
 
-        self.__fitz_page = fitz_page
-        self.__number = number
-        self.__width = width
-        self.__height = height
+    fitz_page: fitz.Page
+    number: int
+    width: float
+    height: float
 
-    @property
-    def number(self) -> int:
-        """
-        Return the page index.
-
-        Returns:
-            int: Zero-based page number.
-        """
-
-        return self.__number
-    
-    @property
-    def width(self) -> float:
-        """
-        Return the page width.
-
-        Returns:
-            float: Width in points.
-        """
-
-        return self.__width
-    
-    @property
-    def height(self) -> float:
-        """
-        Return the page height.
-
-        Returns:
-            float: Height in points.
-        """
-
-        return self.__height
-    
-    def get_dict(
-        self
-    ) -> dict[str, Any]:
+    def get_dict(self) -> dict[str, Any]:
         """
         Build a dictionary representation of the page.
 
@@ -74,74 +35,23 @@ class Page:
             "width": self.width,
             "height": self.height,
         }
-    
 
+@dataclass(slots=True)
 class Block:
-    def __init__(
-        self,
-        page: Page, 
-        id: int, 
-        number: int, 
-        bbox: tuple[float, float, float, float]
-    ) -> None:
-        """
-        Capture block metadata and its bounding box on a page.
+    """
+    Capture block metadata and its bounding box on a page.
 
-        Args:
-            page (Page): Parent page.
-            id (int): Sequential block identifier.
-            number (int): Block index from the PDF.
-            bbox (tuple[float, float, float, float]): Bounding box (xl, yt, xr, yb).
-        """
+    Attributes:
+        page (Page): Parent page.
+        id (int): Sequential block identifier.
+        number (int): Block index from the PDF.
+        bbox (tuple[float, float, float, float]): Bounding box (xl, yt, xr, yb).
+    """
 
-        self.__page = page
-        self.__id = id
-        self.__number = number
-        self.__bbox = bbox
-
-    @property
-    def page(self) -> Page:
-        """
-        Return the parent page.
-
-        Returns:
-            Page: Page that contains the block.
-        """
-
-        return self.__page
-    
-    @property
-    def id(self) -> int:
-        """
-        Return the block identifier.
-
-        Returns:
-            int: Internal block id.
-        """
-
-        return self.__id
-    
-    @property
-    def number(self) -> int:
-        """
-        Return the block number from the source document.
-
-        Returns:
-            int: Block index reported by PyMuPDF.
-        """
-
-        return self.__number
-    
-    @property
-    def bbox(self) -> tuple[float, float, float, float]:
-        """
-        Return the block bounding box.
-
-        Returns:
-            tuple[float, float, float, float]: (xl, yt, xr, yb) coordinates.
-        """
-
-        return self.__bbox
+    page: Page
+    id: int
+    number: int
+    bbox: tuple[float, float, float, float]
 
     @property
     def xl(self) -> float:
@@ -152,7 +62,7 @@ class Block:
             float: Bounding box left edge.
         """
 
-        return self.__bbox[0]
+        return self.bbox[0]
 
     @property
     def yt(self) -> float:
@@ -163,7 +73,7 @@ class Block:
             float: Bounding box top edge.
         """
 
-        return self.__bbox[1]
+        return self.bbox[1]
 
     @property
     def xr(self) -> float:
@@ -174,7 +84,7 @@ class Block:
             float: Bounding box right edge.
         """
 
-        return self.__bbox[2]
+        return self.bbox[2]
 
     @property
     def yb(self) -> float:
@@ -185,7 +95,7 @@ class Block:
             float: Bounding box bottom edge.
         """
 
-        return self.__bbox[3]
+        return self.bbox[3]
 
     @property
     def xc(self) -> float:
@@ -209,9 +119,7 @@ class Block:
 
         return (self.yt + self.yb) / 2
     
-    def get_dict(
-        self
-    ) -> dict[str, Any]:
+    def get_dict(self) -> dict[str, Any]:
         """
         Build a dictionary for the block with page fields namespaced.
 
@@ -236,28 +144,22 @@ class Block:
         }
 
 
+@dataclass(slots=True)
 class Line:
-    def __init__(
-        self,
-        block: Block, 
-        id: int, 
-        number: int, 
-        bbox: tuple[float, float, float, float]
-    ) -> None:
-        """
-        Store line metadata inside a block.
+    """
+    Store line metadata inside a block.
 
-        Args:
-            block (Block): Parent block.
-            id (int): Sequential line identifier.
-            number (int): Line index within the block.
-            bbox (tuple[float, float, float, float]): Bounding box (xl, yt, xr, yb).
-        """
+    Attributes:
+        block (Block): Parent block.
+        id (int): Sequential line identifier.
+        number (int): Line index within the block.
+        bbox (tuple[float, float, float, float]): Bounding box (xl, yt, xr, yb).
+    """
 
-        self.__block = block
-        self.__id = id
-        self.__number = number
-        self.__bbox = bbox
+    block: Block
+    id: int
+    number: int
+    bbox: tuple[float, float, float, float]
 
     @property
     def page(self) -> Page:
@@ -268,51 +170,7 @@ class Line:
             Page: Page of the parent block.
         """
 
-        return self.__block.page
-
-    @property
-    def block(self) -> Block:
-        """
-        Return the parent block.
-
-        Returns:
-            Block: Block that holds the line.
-        """
-
-        return self.__block
-    
-    @property
-    def id(self) -> int:
-        """
-        Return the line identifier.
-
-        Returns:
-            int: Internal line id.
-        """
-
-        return self.__id
-    
-    @property
-    def number(self) -> int:
-        """
-        Return the line number inside the block.
-
-        Returns:
-            int: Line index reported by PyMuPDF.
-        """
-
-        return self.__number
-    
-    @property
-    def bbox(self) -> tuple[float, float, float, float]:
-        """
-        Return the line bounding box.
-
-        Returns:
-            tuple[float, float, float, float]: (xl, yt, xr, yb) coordinates.
-        """
-
-        return self.__bbox
+        return self.block.page
 
     @property
     def xl(self) -> float:
@@ -323,7 +181,7 @@ class Line:
             float: Bounding box left edge.
         """
 
-        return self.__bbox[0]
+        return self.bbox[0]
 
     @property
     def yt(self) -> float:
@@ -334,7 +192,7 @@ class Line:
             float: Bounding box top edge.
         """
 
-        return self.__bbox[1]
+        return self.bbox[1]
 
     @property
     def xr(self) -> float:
@@ -345,7 +203,7 @@ class Line:
             float: Bounding box right edge.
         """
 
-        return self.__bbox[2]
+        return self.bbox[2]
 
     @property
     def yb(self) -> float:
@@ -356,7 +214,7 @@ class Line:
             float: Bounding box bottom edge.
         """
 
-        return self.__bbox[3]
+        return self.bbox[3]
 
     @property
     def xc(self) -> float:
@@ -413,9 +271,7 @@ class Line:
 
         return self.width * self.height
     
-    def get_dict(
-        self
-    ) -> dict[str, Any]:
+    def get_dict(self) -> dict[str, Any]:
         """
         Build a dictionary for the line with block and page prefixes.
 
@@ -444,76 +300,48 @@ class Line:
         }
     
 
+
+@dataclass(slots=True)
 class Content:
-    def __init__(
-        self,
-        line: Line,
-        id: int,
-        number: int,
-        text: str,
-        bbox: tuple[float, float, float, float],
-        origin: tuple[float, float],
-        ascender: float,
-        descender: float,
-        size: float,
-        font: str,
-        flags: int,
-        char_flags: int,
-        bidi: int,
-        alpha: int,
-        rgb_color: int,
-        horizontal_end_on_page: int | None = None
-    ) -> None:
-        """
-        Store a text span and its visual attributes.
+    """
+    Store a text span and its visual attributes.
 
-        Args:
-            line (Line): Parent line.
-            id (int): Sequential content identifier.
-            number (int): Span index within the line.
-            text (str): Span text.
-            bbox (tuple[float, float, float, float]): Bounding box (xl, yt, xr, yb).
-            origin (tuple[float, float]): Text origin coordinates.
-            ascender (float): Font ascender height.
-            descender (float): Font descender depth.
-            size (float): Font size.
-            font (str): Font family name.
-            flags (int): Text flags from PyMuPDF.
-            char_flags (int): Character flags from PyMuPDF.
-            bidi (int): Bidirectional level.
-            alpha (int): Alpha channel value.
-            rgb_color (int): RGB color integer.
-            horizontal_end_on_page (int | None): Bucket index assigned across the page.
-        """
+    Attributes:
+        line (Line): Parent line.
+        id (int): Sequential content identifier.
+        number (int): Span index within the line.
+        text (str): Span text.
+        bbox (tuple[float, float, float, float]): Bounding box (xl, yt, xr, yb).
+        origin (tuple[float, float]): Text origin coordinates.
+        ascender (float): Font ascender height.
+        descender (float): Font descender depth.
+        size (float): Font size.
+        font (str): Font family name.
+        flags (int): Text flags from PyMuPDF.
+        char_flags (int): Character flags from PyMuPDF.
+        bidi (int): Bidirectional level.
+        alpha (int): Alpha channel value.
+        rgb_color (int): RGB color integer.
+        horizontal_end_on_page (int | None): Bucket index assigned across the page.
+    """
 
-        self.__line = line
-        self.__id = id
-        self.__number = number
-        self.__text = text
-        self.__bbox = bbox
-        self.__origin = origin
-        self.__ascender = ascender
-        self.__descender = descender
-        self.__size = size
-        self.__font = font
-        self.__flags = flags
-        self.__char_flags = char_flags
-        self.__bidi = bidi
-        self.__alpha = alpha
-        self.__rgb_color = rgb_color
-        self.__horizontal_end_on_page = horizontal_end_on_page
+    line: Line
+    id: int
+    number: int
+    text: str
+    bbox: tuple[float, float, float, float]
+    origin: tuple[float, float]
+    ascender: float
+    descender: float
+    size: float
+    font: str
+    flags: int
+    char_flags: int
+    bidi: int
+    alpha: int
+    rgb_color: int
+    horizontal_end_on_page: int | None = None
 
-    @property
-    def line(self) -> Line:
-        """
-        Return the parent line.
-
-        Returns:
-            Line: Line that contains the span.
-        """
-
-        return self.__line
-    
     @property
     def block(self) -> Block:
         """
@@ -524,7 +352,7 @@ class Content:
         """
 
         return self.line.block
-    
+
     @property
     def page(self) -> Page:
         """
@@ -535,63 +363,6 @@ class Content:
         """
 
         return self.block.page
-    
-    @property
-    def id(self) -> int:
-        """
-        Return the content identifier.
-
-        Returns:
-            int: Internal content id.
-        """
-
-        return self.__id
-    
-    @property
-    def number(self) -> int:
-        """
-        Return the span number within its line.
-
-        Returns:
-            int: Order reported by PyMuPDF.
-        """
-
-        return self.__number
-
-    @property
-    def text(self) -> str:
-        """
-        Return the span text.
-
-        Returns:
-            str: Normalized text content.
-        """
-
-        return self.__text
-
-    # ── geometry ──
-
-    @property
-    def bbox(self) -> tuple[float, float, float, float]:
-        """
-        Return the span bounding box.
-
-        Returns:
-            tuple[float, float, float, float]: (xl, yt, xr, yb) coordinates.
-        """
-
-        return self.__bbox
-    
-    @property
-    def origin(self) -> tuple[float, float]:
-        """
-        Return the text origin point.
-
-        Returns:
-            tuple[float, float]: (x, y) origin coordinates.
-        """
-
-        return self.__origin
 
     @property
     def xl(self) -> float:
@@ -602,7 +373,7 @@ class Content:
             float: Bounding box left edge.
         """
 
-        return self.__bbox[0]
+        return self.bbox[0]
 
     @property
     def yt(self) -> float:
@@ -613,7 +384,7 @@ class Content:
             float: Bounding box top edge.
         """
 
-        return self.__bbox[1]
+        return self.bbox[1]
 
     @property
     def xr(self) -> float:
@@ -624,7 +395,7 @@ class Content:
             float: Bounding box right edge.
         """
 
-        return self.__bbox[2]
+        return self.bbox[2]
 
     @property
     def yb(self) -> float:
@@ -635,7 +406,7 @@ class Content:
             float: Bounding box bottom edge.
         """
 
-        return self.__bbox[3]
+        return self.bbox[3]
 
     @property
     def xc(self) -> float:
@@ -658,7 +429,7 @@ class Content:
         """
 
         return (self.yt + self.yb) / 2
-    
+
     @property
     def xo(self) -> float:
         """
@@ -668,7 +439,7 @@ class Content:
             float: X value from origin.
         """
 
-        return self.__origin[0]
+        return self.origin[0]
 
     @property
     def yo(self) -> float:
@@ -679,8 +450,8 @@ class Content:
             float: Y value from origin.
         """
 
-        return self.__origin[1]
-    
+        return self.origin[1]
+
     @property
     def width(self) -> float:
         """
@@ -702,7 +473,7 @@ class Content:
         """
 
         return self.yb - self.yt
-    
+
     @property
     def area(self) -> float:
         """
@@ -714,139 +485,7 @@ class Content:
 
         return self.width * self.height
 
-    # ── typography ──
-
-    @property
-    def size(self) -> float:
-        """
-        Return the font size.
-
-        Returns:
-            float: Span font size.
-        """
-
-        return self.__size
-
-    @property
-    def font(self) -> str:
-        """
-        Return the font name.
-
-        Returns:
-            str: Font family used in the span.
-        """
-
-        return self.__font
-
-    @property
-    def flags(self) -> int:
-        """
-        Return the text flags.
-
-        Returns:
-            int: Rendering flags from PyMuPDF.
-        """
-
-        return self.__flags
-
-    @property
-    def char_flags(self) -> int:
-        """
-        Return the character flags.
-
-        Returns:
-            int: Character-level flags from PyMuPDF.
-        """
-
-        return self.__char_flags
-
-    @property
-    def ascender(self) -> float:
-        """
-        Return the font ascender height.
-
-        Returns:
-            float: Ascender value.
-        """
-
-        return self.__ascender
-
-    @property
-    def descender(self) -> float:
-        """
-        Return the font descender depth.
-
-        Returns:
-            float: Descender value.
-        """
-
-        return self.__descender
-
-    @property
-    def bidi(self) -> int:
-        """
-        Return the bidirectional level.
-
-        Returns:
-            int: Bidi setting for the text.
-        """
-
-        return self.__bidi
-
-    @property
-    def alpha(self) -> int:
-        """
-        Return the alpha value.
-
-        Returns:
-            int: Alpha channel used for rendering.
-        """
-
-        return self.__alpha
-
-    # ── color ──
-
-    @property
-    def rgb_color(self) -> int:
-        """
-        Return the RGB color value.
-
-        Returns:
-            int: Integer-encoded RGB color.
-        """
-
-        return self.__rgb_color
-    
-    # ── position on page ──
-
-    @property
-    def horizontal_end_on_page(self) -> int | None:
-        """
-        Return the horizontal bucket assigned on the page.
-
-        Returns:
-            int | None: Bucket index or None if not assigned.
-        """
-
-        return self.__horizontal_end_on_page
-    
-    @horizontal_end_on_page.setter
-    def horizontal_end_on_page(
-        self, 
-        horizontal_end_on_page: int | None
-    ) -> None:
-        """
-        Set the horizontal bucket assigned on the page.
-
-        Args:
-            horizontal_end_on_page (int | None): Bucket index for the content.
-        """
-
-        self.__horizontal_end_on_page = horizontal_end_on_page
-    
-    def get_dict(
-        self
-    ) -> dict[str, Any]:
+    def get_dict(self) -> dict[str, Any]:
         """
         Build a dictionary for the content with parent fields prefixed.
 
@@ -857,46 +496,46 @@ class Content:
         line_dict = self.line.get_dict()
         for key in line_dict.copy():
             if not (
-                key.startswith("page_") 
-                or key.startswith("block_")
+                key.startswith('page_') 
+                or key.startswith('block_')
             ):
                 line_dict[f"line_{key}"] = line_dict.pop(key)
 
         return {
-            "id": self.id, 
-            "number": self.number,
-            "text": self.text,
-            "xl": self.xl,
-            "yt": self.yt,
-            "xr": self.xr,
-            "yb": self.yb,
-            "xc": self.xc,
-            "yc": self.yc,
-            "xo": self.xo,
-            "yo": self.yo,
-            "width": self.width,
-            "height": self.height,
-            "area": self.area,
-            "ascender": self.ascender,
-            "descender": self.descender,
-            "size": self.size,
-            "font": self.font,
-            "flags": self.flags,
-            "char_flags": self.char_flags,
-            "bidi": self.bidi,
-            "alpha": self.alpha,
-            "rgb_color": self.rgb_color, 
-            "horizontal_end_on_page": self.horizontal_end_on_page, 
+            'id': self.id, 
+            'number': self.number,
+            'text': self.text,
+            'xl': self.xl,
+            'yt': self.yt,
+            'xr': self.xr,
+            'yb': self.yb,
+            'xc': self.xc,
+            'yc': self.yc,
+            'xo': self.xo,
+            'yo': self.yo,
+            'width': self.width,
+            'height': self.height,
+            'area': self.area,
+            'ascender': self.ascender,
+            'descender': self.descender,
+            'size': self.size,
+            'font': self.font,
+            'flags': self.flags,
+            'char_flags': self.char_flags,
+            'bidi': self.bidi,
+            'alpha': self.alpha,
+            'rgb_color': self.rgb_color, 
+            'horizontal_end_on_page': self.horizontal_end_on_page, 
             **line_dict
         }
-    
+
 
 class PDFContents(list[Content]):
     def __init__(
         self,
         contents: list[Content], 
         sorted_by: tuple[str, ...] | None = None, 
-        horizontal_end_on_page_by_x: tuple[str, ...] | None = None, 
+        horizontal_end_on_page_by_x: tuple[float, ...] | None = None, 
         is_joined: bool = False
     ) -> None:
         """
@@ -927,7 +566,7 @@ class PDFContents(list[Content]):
         return self.__sorted_by
     
     @property
-    def horizontal_end_on_page_by_x(self) -> tuple[str, ...] | None:
+    def horizontal_end_on_page_by_x(self) -> tuple[float, ...] | None:
         """
         Return the cached x delimiters for horizontal buckets.
 
