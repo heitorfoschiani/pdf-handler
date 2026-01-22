@@ -98,7 +98,7 @@ class PDFExtractor:
                             span_char_flags, 
                             span_bidi, 
                             span_alpha, 
-                            span_color, 
+                            span_color
                         )
 
                         contents.append(content)
@@ -205,7 +205,6 @@ class PDFExtractor:
         text = text.replace("\n", " ")
         text = text.replace("\xa0", " ")
         text = text.replace("\t", " ")
-        text = text.replace("  ", " ")
-        text = re.sub(r" +", lambda c: "" if len(c.group(0)) == 1 else " ", text)
+        text = re.sub(r" {2,}", " ", text)
 
         return text
