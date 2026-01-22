@@ -566,10 +566,13 @@ class PDFContents(list[Content]):
                 return
         
         for content in self:
+            assigned_bucket = len(x_delimiters)
             for i, x_delimiter in enumerate(x_delimiters):
                 if content.xl <= x_delimiter:
-                    content.horizontal_end_on_page = i
+                    assigned_bucket = i
                     break
+                
+            content.horizontal_end_on_page = assigned_bucket
 
         self.__horizontal_end_on_page_by_x = x_delimiters
 
@@ -577,7 +580,7 @@ class PDFContents(list[Content]):
         self, 
         x_delimiters: tuple[float, ...], 
         use_cache: bool = True
-    ) -> None:
+    ):
         pdf_contents = self.copy()
         pdf_contents.assign_horizontal_end_on_page(x_delimiters, use_cache)
     
@@ -595,14 +598,23 @@ class PDFContents(list[Content]):
 
         # Descovering the first content of the block
         i_initial = 0
-        while not self._is_same_block(pdf_content[i_initial], self[i_ref]):
+        while (
+            i_initial < len(pdf_content)
+            and not self._is_same_block(pdf_content[i_initial], self[i_ref])
+        ):
             i_initial += 1
+
+        if i_initial == len(pdf_content):
+            raise ValueError("Reference content not found when searching for same block.")
 
         contents_from_same_block = [pdf_content[i_initial]]
 
         # Extracting contents
         i = i_initial + 1
-        while self._is_same_block(pdf_content[i], pdf_content[i - 1]):
+        while (
+            i < len(pdf_content)
+            and self._is_same_block(pdf_content[i], pdf_content[i - 1])
+        ):
             contents_from_same_block.append(pdf_content[i])
             i += 1
 
@@ -610,7 +622,7 @@ class PDFContents(list[Content]):
         if self.__sorted_by is not None:
             sort_by = self.__sorted_by
         else:
-            sort_by = ("id")
+            sort_by = ("id",)
 
         contents_from_same_block.sort(by=sort_by)
 
@@ -619,8 +631,11 @@ class PDFContents(list[Content]):
     def get_contents_from_same_row(
         self, 
         i_ref: int, 
-        yo_diff_tolerace: float = 0.0
+        yo_diff_tolerance: float = 0.0
     ):
+        if yo_diff_tolerance < 0:
+            raise ValueError("The argument 'yo_diff_tolerance' can not be less then zero.")
+
         pdf_content = self.copy()
         pdf_content.sort(by=(
             "page.number", 
@@ -629,14 +644,23 @@ class PDFContents(list[Content]):
 
         # Descovering the first content of the row
         i_initial = 0
-        while not self._is_same_row(pdf_content[i_initial], self[i_ref], yo_diff_tolerace):
+        while (
+            i_initial < len(pdf_content) 
+            and not self._is_same_row(pdf_content[i_initial], self[i_ref], yo_diff_tolerance)
+        ):
             i_initial += 1
+            
+        if i_initial == len(pdf_content):
+            raise ValueError("Reference content not found when searching for same row.")
 
         contents_from_same_row = [pdf_content[i_initial]]
 
         # Extracting contents
         i = i_initial + 1
-        while self._is_same_row(pdf_content[i], pdf_content[i - 1], yo_diff_tolerace):
+        while (
+            i < len(pdf_content) 
+            and self._is_same_row(pdf_content[i], pdf_content[i - 1], yo_diff_tolerance)
+        ):
             contents_from_same_row.append(pdf_content[i])
             i += 1
 
@@ -644,7 +668,7 @@ class PDFContents(list[Content]):
         if self.__sorted_by is not None:
             sort_by = self.__sorted_by
         else:
-            sort_by = ("id")
+            sort_by = ("id",)
 
         contents_from_same_row.sort(by=sort_by)
 
@@ -662,14 +686,23 @@ class PDFContents(list[Content]):
 
         # Descovering the first content of the line
         i_initial = 0
-        while not self._is_same_line(pdf_content[i_initial], self[i_ref]):
+        while (
+            i_initial < len(pdf_content) 
+            and not self._is_same_line(pdf_content[i_initial], self[i_ref])
+        ):
             i_initial += 1
+
+        if i_initial == len(pdf_content):
+            raise ValueError("Reference content not found when searching for same line.")
 
         contents_from_same_line = [pdf_content[i_initial]]
 
         # Extracting contents
         i = i_initial + 1
-        while self._is_same_line(pdf_content[i], pdf_content[i - 1]):
+        while (
+            i < len(pdf_content) 
+            and self._is_same_line(pdf_content[i], pdf_content[i - 1])
+        ):
             contents_from_same_line.append(pdf_content[i])
             i += 1
 
@@ -677,7 +710,7 @@ class PDFContents(list[Content]):
         if self.__sorted_by is not None:
             sort_by = self.__sorted_by
         else:
-            sort_by = ("id")
+            sort_by = ("id",)
 
         contents_from_same_line.sort(by=sort_by)
         
@@ -718,10 +751,10 @@ class PDFContents(list[Content]):
 
         content1_size = round(content1.size, 2)
         content2_size = round(content2.size, 2)
-        
+
         content1_yo = round(content1.yo, 2)
         content2_yo = round(content2.yo, 2)
-        
+
         return (
             content1_line_id == content2_line_id
             and content1_font == content2_font
@@ -743,7 +776,7 @@ class PDFContents(list[Content]):
         return content1_block_id == content2_block_id
     
     @staticmethod
-    def _is_same_row(content1: Content, content2: Content, yo_diff_tolerace: float) -> bool:
+    def _is_same_row(content1: Content, content2: Content, yo_diff_tolerance: float) -> bool:
         content1_page_num = content1.page.number
         content2_page_num = content2.page.number
         content1_yo = round(content1.yo, 2)
@@ -751,7 +784,7 @@ class PDFContents(list[Content]):
 
         return (
             content1_page_num == content2_page_num
-            and abs(content1_yo - content2_yo) <= yo_diff_tolerace
+            and abs(content1_yo - content2_yo) <= yo_diff_tolerance
         )
     
     @staticmethod
