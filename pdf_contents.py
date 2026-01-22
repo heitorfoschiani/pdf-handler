@@ -721,14 +721,6 @@ class PDFContents(list[Content]):
         
         content1_yo = round(content1.yo, 2)
         content2_yo = round(content2.yo, 2)
-
-        content1_xl = round(content1.xl, 2)
-        content2_xl = round(content2.xl, 2)
-
-        content1_xr = round(content1.xr, 2)
-        content2_xr = round(content2.xr, 2)
-
-        spacement_limit = 0.25 * content1_size
         
         return (
             content1_line_id == content2_line_id
@@ -741,10 +733,6 @@ class PDFContents(list[Content]):
             and content1_horizontal_end_on_page == content2_horizontal_end_on_page
             and content1_size == content2_size
             and content1_yo == content2_yo
-            and (
-                abs(content2_xl - content1_xr) <= spacement_limit
-                or abs(content1_xl - content2_xr) <= spacement_limit
-            )
         )
     
     @staticmethod
