@@ -1,6 +1,6 @@
 # pdf-handler
 
-Python utilities to extract structured text data from PDF files using PyMuPDF, then sort, group, and post-process the extracted content.
+Built to facilitate the extraction and manipulation of content contained in PDF files. To this end, it includes Python utilities to extract relevant content for manipulation using PyMuPDF, such as text, x and y position, RGB color, size, font, etc., and then pre-configured functions to facilitate these manipulations, such as sort content by criterion, join contents from same attribute, etc.
 
 ## What this project does
 
