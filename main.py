@@ -1,4 +1,4 @@
-from pdf_extractor import PDFExtractor
+from extract import PDFExtractor
 
 
 PDF_FILE_PATH = r""

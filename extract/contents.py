@@ -24,10 +24,10 @@ class Page:
 
     def get_dict(self) -> dict[str, Any]:
         """
-        Build a dictionary representation of the page.
-
+        Return dict by processing the available inputs.
+        
         Returns:
-            dict[str, Any]: Page number and size data.
+            dict[str, Any]: Result produced by the function logic.
         """
 
         return {
@@ -56,10 +56,10 @@ class Block:
     @property
     def xl(self) -> float:
         """
-        Return the left x coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box left edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[0]
@@ -67,10 +67,10 @@ class Block:
     @property
     def yt(self) -> float:
         """
-        Return the top y coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box top edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[1]
@@ -78,10 +78,10 @@ class Block:
     @property
     def xr(self) -> float:
         """
-        Return the right x coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box right edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[2]
@@ -89,10 +89,10 @@ class Block:
     @property
     def yb(self) -> float:
         """
-        Return the bottom y coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box bottom edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[3]
@@ -100,10 +100,10 @@ class Block:
     @property
     def xc(self) -> float:
         """
-        Return the horizontal center.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Midpoint between xl and xr.
+            float: Result produced by the function logic.
         """
 
         return (self.xl + self.xr) / 2
@@ -111,20 +111,20 @@ class Block:
     @property
     def yc(self) -> float:
         """
-        Return the vertical center.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Midpoint between yt and yb.
+            float: Result produced by the function logic.
         """
 
         return (self.yt + self.yb) / 2
     
     def get_dict(self) -> dict[str, Any]:
         """
-        Build a dictionary for the block with page fields namespaced.
-
+        Return dict by processing the available inputs.
+        
         Returns:
-            dict[str, Any]: Block geometry and page metadata.
+            dict[str, Any]: Result produced by the function logic.
         """
 
         page_dict = self.page.get_dict()
@@ -164,10 +164,10 @@ class Line:
     @property
     def page(self) -> Page:
         """
-        Return the page containing the line.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            Page: Page of the parent block.
+            Page: Result produced by the function logic.
         """
 
         return self.block.page
@@ -175,10 +175,10 @@ class Line:
     @property
     def xl(self) -> float:
         """
-        Return the left x coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box left edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[0]
@@ -186,10 +186,10 @@ class Line:
     @property
     def yt(self) -> float:
         """
-        Return the top y coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box top edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[1]
@@ -197,10 +197,10 @@ class Line:
     @property
     def xr(self) -> float:
         """
-        Return the right x coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box right edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[2]
@@ -208,10 +208,10 @@ class Line:
     @property
     def yb(self) -> float:
         """
-        Return the bottom y coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box bottom edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[3]
@@ -219,10 +219,10 @@ class Line:
     @property
     def xc(self) -> float:
         """
-        Return the horizontal center.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Midpoint between xl and xr.
+            float: Result produced by the function logic.
         """
 
         return (self.xl + self.xr) / 2
@@ -230,10 +230,10 @@ class Line:
     @property
     def yc(self) -> float:
         """
-        Return the vertical center.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Midpoint between yt and yb.
+            float: Result produced by the function logic.
         """
 
         return (self.yt + self.yb) / 2
@@ -241,10 +241,10 @@ class Line:
     @property
     def width(self) -> float:
         """
-        Return the line width.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Difference between xr and xl.
+            float: Result produced by the function logic.
         """
 
         return self.xr - self.xl
@@ -252,10 +252,10 @@ class Line:
     @property
     def height(self) -> float:
         """
-        Return the line height.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Difference between yb and yt.
+            float: Result produced by the function logic.
         """
 
         return self.yb - self.yt
@@ -263,20 +263,20 @@ class Line:
     @property
     def area(self) -> float:
         """
-        Return the line area.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Product of width and height.
+            float: Result produced by the function logic.
         """
 
         return self.width * self.height
     
     def get_dict(self) -> dict[str, Any]:
         """
-        Build a dictionary for the line with block and page prefixes.
-
+        Return dict by processing the available inputs.
+        
         Returns:
-            dict[str, Any]: Line geometry plus parent metadata.
+            dict[str, Any]: Result produced by the function logic.
         """
 
         block_dict = self.block.get_dict()
@@ -345,10 +345,10 @@ class Content:
     @property
     def block(self) -> Block:
         """
-        Return the parent block.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            Block: Block that contains the line.
+            Block: Result produced by the function logic.
         """
 
         return self.line.block
@@ -356,10 +356,10 @@ class Content:
     @property
     def page(self) -> Page:
         """
-        Return the page containing the span.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            Page: Page of the parent block.
+            Page: Result produced by the function logic.
         """
 
         return self.block.page
@@ -367,10 +367,10 @@ class Content:
     @property
     def xl(self) -> float:
         """
-        Return the left x coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box left edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[0]
@@ -378,10 +378,10 @@ class Content:
     @property
     def yt(self) -> float:
         """
-        Return the top y coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box top edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[1]
@@ -389,10 +389,10 @@ class Content:
     @property
     def xr(self) -> float:
         """
-        Return the right x coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box right edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[2]
@@ -400,10 +400,10 @@ class Content:
     @property
     def yb(self) -> float:
         """
-        Return the bottom y coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Bounding box bottom edge.
+            float: Result produced by the function logic.
         """
 
         return self.bbox[3]
@@ -411,10 +411,10 @@ class Content:
     @property
     def xc(self) -> float:
         """
-        Return the horizontal center.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Midpoint between xl and xr.
+            float: Result produced by the function logic.
         """
 
         return (self.xl + self.xr) / 2
@@ -422,10 +422,10 @@ class Content:
     @property
     def yc(self) -> float:
         """
-        Return the vertical center.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Midpoint between yt and yb.
+            float: Result produced by the function logic.
         """
 
         return (self.yt + self.yb) / 2
@@ -433,10 +433,10 @@ class Content:
     @property
     def xo(self) -> float:
         """
-        Return the origin x coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: X value from origin.
+            float: Result produced by the function logic.
         """
 
         return self.origin[0]
@@ -444,10 +444,10 @@ class Content:
     @property
     def yo(self) -> float:
         """
-        Return the origin y coordinate.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Y value from origin.
+            float: Result produced by the function logic.
         """
 
         return self.origin[1]
@@ -455,10 +455,10 @@ class Content:
     @property
     def width(self) -> float:
         """
-        Return the span width.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Difference between xr and xl.
+            float: Result produced by the function logic.
         """
 
         return self.xr - self.xl
@@ -466,10 +466,10 @@ class Content:
     @property
     def height(self) -> float:
         """
-        Return the span height.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Difference between yb and yt.
+            float: Result produced by the function logic.
         """
 
         return self.yb - self.yt
@@ -477,20 +477,20 @@ class Content:
     @property
     def area(self) -> float:
         """
-        Return the span area.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            float: Product of width and height.
+            float: Result produced by the function logic.
         """
 
         return self.width * self.height
 
     def get_dict(self) -> dict[str, Any]:
         """
-        Build a dictionary for the content with parent fields prefixed.
-
+        Return dict by processing the available inputs.
+        
         Returns:
-            dict[str, Any]: Text data, geometry, and inherited metadata.
+            dict[str, Any]: Result produced by the function logic.
         """
 
         line_dict = self.line.get_dict()
@@ -531,6 +531,10 @@ class Content:
 
 
 class PDFContents(list[Content]):
+    """
+    Store parsed PDF content spans and provide sorting, grouping, and join helpers.
+    """
+
     def __init__(
         self,
         contents: list[Content], 
@@ -539,13 +543,13 @@ class PDFContents(list[Content]):
         is_joined: bool = False
     ) -> None:
         """
-        Wrap a list of content items with sorting and grouping metadata.
-
+        Initialize the instance by assigning the provided values.
+        
         Args:
-            contents (list[Content]): Contents to manage.
-            sorted_by (tuple[str, ...] | None): Cached sort keys.
-            horizontal_end_on_page_by_x (tuple[float, ...] | None): X delimiters used to bucket spans.
-            is_joined (bool): Flag indicating whether sequential spans were already joined.
+            contents (list[Content]): Contents used by the function logic.
+            sorted_by (tuple[str, ...] | None): Sorted by used by the function logic.
+            horizontal_end_on_page_by_x (tuple[float, ...] | None): Horizontal end on page by x used by the function logic.
+            is_joined (bool): Is joined used by the function logic.
         """
 
         super().__init__(contents)
@@ -557,10 +561,10 @@ class PDFContents(list[Content]):
     @property
     def sorted_by(self) -> tuple[str, ...] | None:
         """
-        Return the cached sort keys.
-
+        Sorted by by applying the function logic.
+        
         Returns:
-            tuple[str, ...] | None: Attributes used in the last sort.
+            tuple[str, ...] | None: Result produced by the function logic.
         """
 
         return self.__sorted_by
@@ -568,10 +572,10 @@ class PDFContents(list[Content]):
     @property
     def horizontal_end_on_page_by_x(self) -> tuple[float, ...] | None:
         """
-        Return the cached x delimiters for horizontal buckets.
-
+        Horizontal end on page by x by applying the function logic.
+        
         Returns:
-            tuple[float, ...] | None: Delimiters applied to contents.
+            tuple[float, ...] | None: Result produced by the function logic.
         """
 
         return self.__horizontal_end_on_page_by_x
@@ -579,20 +583,20 @@ class PDFContents(list[Content]):
     @property
     def is_joined(self) -> bool:
         """
-        Indicate whether sequential spans were merged.
-
+        Evaluate whether joined by checking the provided data.
+        
         Returns:
-            bool: True when join() has been applied.
+            bool: Boolean result of the evaluated condition.
         """
 
         return self.__is_joined
 
     def copy(self) -> "PDFContents":
         """
-        Create a shallow copy preserving cached metadata.
-
+        Execute the function logic using the provided inputs.
+        
         Returns:
-            PDFContents: Duplicated contents list.
+            'PDFContents': Result produced by the function logic.
         """
 
         return PDFContents(
@@ -614,11 +618,11 @@ class PDFContents(list[Content]):
         use_cache: bool = True
     ) -> None:
         """
-        Sort contents in place by the provided attributes.
-
+        Sort data by applying the transformation rules.
+        
         Args:
-            by (tuple[str, ...]): Attribute paths used to order items.
-            use_cache (bool): Skip sorting when already ordered with the same keys.
+            by (tuple[str, ...]): By used by the function logic.
+            use_cache (bool): Use cache used by the function logic.
         """
 
         if (
@@ -645,14 +649,14 @@ class PDFContents(list[Content]):
         use_cache: bool = True
     ) -> "PDFContents":
         """
-        Return a sorted copy without mutating the original list.
-
+        Execute the function logic using the provided inputs.
+        
         Args:
-            by (tuple[str, ...]): Attribute paths used to order items.
-            use_cache (bool): Reuse cached ordering when possible.
-
+            by (tuple[str, ...]): By used by the function logic.
+            use_cache (bool): Use cache used by the function logic.
+        
         Returns:
-            PDFContents: New list sorted by the given keys.
+            'PDFContents': Result produced by the function logic.
         """
 
         pdf_contents = self.copy()
@@ -665,10 +669,10 @@ class PDFContents(list[Content]):
         use_cache: bool = True
     ) -> None:        
         """
-        Merge sequential spans that share layout and style.
-
+        Execute the function logic using the provided inputs.
+        
         Args:
-            use_cache (bool): Skip processing when already joined.
+            use_cache (bool): Use cache used by the function logic.
         """
 
         if use_cache and self.__is_joined:
@@ -731,13 +735,13 @@ class PDFContents(list[Content]):
         use_cache: bool = True
     ) -> "PDFContents":
         """
-        Return a joined copy of the contents list.
-
+        Execute the function logic using the provided inputs.
+        
         Args:
-            use_cache (bool): Skip processing when a joined version is cached.
-
+            use_cache (bool): Use cache used by the function logic.
+        
         Returns:
-            PDFContents: Copy where sequential spans are merged.
+            'PDFContents': Result produced by the function logic.
         """
 
         pdf_contents = self.copy()
@@ -751,11 +755,11 @@ class PDFContents(list[Content]):
         use_cache: bool = True
     ) -> None:
         """
-        Assign each content to a horizontal bucket using x delimiters.
-
+        Assign horizontal end on page by updating the target state.
+        
         Args:
-            x_delimiters (tuple[float, ...]): X thresholds that define buckets.
-            use_cache (bool): Skip assignment when cached delimiters match.
+            x_delimiters (tuple[float, ...]): X delimiters used by the function logic.
+            use_cache (bool): Use cache used by the function logic.
         """
 
         if (
@@ -782,72 +786,86 @@ class PDFContents(list[Content]):
         use_cache: bool = True
     ) -> "PDFContents":
         """
-        Return a copy with horizontal buckets assigned.
-
+        Horizontal end on page assigned by applying the function logic.
+        
         Args:
-            x_delimiters (tuple[float, ...]): X thresholds that define buckets.
-            use_cache (bool): Skip reassignment when cached delimiters match.
-
+            x_delimiters (tuple[float, ...]): X delimiters used by the function logic.
+            use_cache (bool): Use cache used by the function logic.
+        
         Returns:
-            PDFContents: Copy with bucket metadata updated.
+            'PDFContents': Result produced by the function logic.
         """
 
         pdf_contents = self.copy()
         pdf_contents.assign_horizontal_end_on_page(x_delimiters, use_cache)
     
         return pdf_contents
-
-    def get_contents_from_same_block(
+    
+    def get_contents_from_same_attr(
         self, 
-        i_ref: int
+        i_ref: int, 
+        attr: str, 
+        diff_tolerance: int | float = 0
     ) -> "PDFContents":
         """
-        Return contents that share the same block as the reference item.
-
+        Return contents from same attr by processing the available inputs.
+        
         Args:
-            i_ref (int): Index of the reference content in the current list.
-
+            i_ref (int): I ref used by the function logic.
+            attr (str): Attr used by the function logic.
+            diff_tolerance (int | float): Diff tolerance used by the function logic.
+        
         Returns:
-            PDFContents: Contents from the same block.
+            'PDFContents': Result produced by the function logic.
         """
+
+        if diff_tolerance < 0:
+            raise ValueError("The argument 'diff_tolerance' can not be less then zero.")
+
+        content_ref = self[i_ref]
+        get_attr = attrgetter(attr)
+        ref_attr = get_attr(content_ref)
+
+        if not (isinstance(ref_attr, int) or isinstance(ref_attr, float)):
+            raise ValueError("The 'attr' must be int or float.")
 
         pdf_content = self.copy()
         pdf_content.sort(by=(
             "page.number", 
-            "block.id"
+            attr
         ))
 
-        # Descovering the first content of the block
+        # Discovering the first content of the block
         i_initial = 0
         while (
             i_initial < len(pdf_content)
-            and not self._is_same_block(pdf_content[i_initial], self[i_ref])
+            and not self._is_same_attr(pdf_content[i_initial], content_ref, attr, diff_tolerance)
         ):
             i_initial += 1
 
         if i_initial == len(pdf_content):
-            raise ValueError("Reference content not found when searching for same block.")
+            raise ValueError("Reference content not found when searching for same attr.")
 
-        contents_from_same_block = [pdf_content[i_initial]]
+        contents_from_same_attr = [pdf_content[i_initial]]
 
         # Extracting contents
         i = i_initial + 1
         while (
             i < len(pdf_content)
-            and self._is_same_block(pdf_content[i], pdf_content[i - 1])
+            and self._is_same_attr(pdf_content[i], content_ref, attr, diff_tolerance)
         ):
-            contents_from_same_block.append(pdf_content[i])
+            contents_from_same_attr.append(pdf_content[i])
             i += 1
 
-        contents_from_same_block = PDFContents(contents_from_same_block)
+        contents_from_same_attr = PDFContents(contents_from_same_attr)
         if self.__sorted_by is not None:
             sort_by = self.__sorted_by
         else:
             sort_by = ("id",)
 
-        contents_from_same_block.sort(by=sort_by)
+        contents_from_same_attr.sort(by=sort_by)
 
-        return contents_from_same_block
+        return contents_from_same_attr
 
     def get_contents_from_same_row(
         self, 
@@ -855,18 +873,20 @@ class PDFContents(list[Content]):
         yo_diff_tolerance: float = 0.0
     ) -> "PDFContents":
         """
-        Return contents that align on the same row as the reference item.
-
+        Return contents from same row by processing the available inputs.
+        
         Args:
-            i_ref (int): Index of the reference content in the current list.
-            yo_diff_tolerance (float): Allowed vertical offset between items.
-
+            i_ref (int): I ref used by the function logic.
+            yo_diff_tolerance (float): Yo diff tolerance used by the function logic.
+        
         Returns:
-            PDFContents: Contents from the same row.
+            'PDFContents': Result produced by the function logic.
         """
 
         if yo_diff_tolerance < 0:
             raise ValueError("The argument 'yo_diff_tolerance' can not be less then zero.")
+
+        content_ref = self[i_ref]
 
         pdf_content = self.copy()
         pdf_content.sort(by=(
@@ -874,11 +894,11 @@ class PDFContents(list[Content]):
             "yo"
         ))
 
-        # Descovering the first content of the row
+        # discovering the first content of the row
         i_initial = 0
         while (
             i_initial < len(pdf_content) 
-            and not self._is_same_row(pdf_content[i_initial], self[i_ref], yo_diff_tolerance)
+            and not self._is_same_row(pdf_content[i_initial], content_ref, yo_diff_tolerance)
         ):
             i_initial += 1
             
@@ -891,7 +911,7 @@ class PDFContents(list[Content]):
         i = i_initial + 1
         while (
             i < len(pdf_content) 
-            and self._is_same_row(pdf_content[i], pdf_content[i - 1], yo_diff_tolerance)
+            and self._is_same_row(pdf_content[i], content_ref, yo_diff_tolerance)
         ):
             contents_from_same_row.append(pdf_content[i])
             i += 1
@@ -906,67 +926,48 @@ class PDFContents(list[Content]):
 
         return contents_from_same_row
     
-    def get_contents_from_same_line(
+    def check_if_matches(
         self, 
-        i_ref: int
-    ) -> "PDFContents":
+        known_contents: list[dict], 
+        exactly_text: bool = False
+    ) -> bool:
         """
-        Return contents that share the same line as the reference item.
-
-        Args:
-            i_ref (int): Index of the reference content in the current list.
-
-        Returns:
-            PDFContents: Contents from the same line.
-        """
-
-        pdf_content = self.copy()
-        pdf_content.sort(by=(
-            "page.number",
-            "line.id",
-        ))
-
-        # Descovering the first content of the line
-        i_initial = 0
-        while (
-            i_initial < len(pdf_content) 
-            and not self._is_same_line(pdf_content[i_initial], self[i_ref])
-        ):
-            i_initial += 1
-
-        if i_initial == len(pdf_content):
-            raise ValueError("Reference content not found when searching for same line.")
-
-        contents_from_same_line = [pdf_content[i_initial]]
-
-        # Extracting contents
-        i = i_initial + 1
-        while (
-            i < len(pdf_content) 
-            and self._is_same_line(pdf_content[i], pdf_content[i - 1])
-        ):
-            contents_from_same_line.append(pdf_content[i])
-            i += 1
-
-        contents_from_same_line = PDFContents(contents_from_same_line)
-        if self.__sorted_by is not None:
-            sort_by = self.__sorted_by
-        else:
-            sort_by = ("id",)
-
-        contents_from_same_line.sort(by=sort_by)
+        Validate if matches by checking the required conditions.
         
-        return contents_from_same_line
+        Args:
+            known_contents (list[dict]): Known contents used by the function logic.
+            exactly_text (bool): Exactly text used by the function logic.
+        
+        Returns:
+            bool: Result produced by the function logic.
+        """
+
+        for known_content in known_contents:
+            found_match = False
+            for content in self:
+                if all(
+                    (attrgetter(key)(content) == value)
+                    if (key != "text" or exactly_text)
+                    else (value in attrgetter(key)(content))
+                    for key, value in known_content.items()
+                ):
+                    found_match = True
+                    break
+
+            if not found_match:
+                return False
+
+        return True
 
     def _replace_contents(
         self, 
         new_pdf_contents: list[Content]
     ) -> None:
         """
-        Replace the current list items with a new collection.
-
+        Replace contents by applying the function logic.
+        
         Args:
-            new_pdf_contents (list[Content]): Contents that overwrite the list.
+            new_pdf_contents (list[Content]): New pdf contents used by the function logic.
         """
 
         self.clear()
@@ -975,14 +976,14 @@ class PDFContents(list[Content]):
     @staticmethod
     def _is_sequential(content1: Content, content2: Content) -> bool:
         """
-        Check if two contents belong to the same sequence for joining.
-
+        Evaluate whether sequential by checking the provided data.
+        
         Args:
-            content1 (Content): First content item.
-            content2 (Content): Second content item.
-
+            content1 (Content): Content1 used by the function logic.
+            content2 (Content): Content2 used by the function logic.
+        
         Returns:
-            bool: True when line, style, and position align.
+            bool: Result produced by the function logic.
         """
 
         content1_line_id = content1.line.id
@@ -1029,35 +1030,48 @@ class PDFContents(list[Content]):
         )
     
     @staticmethod
-    def _is_same_block(content1: Content, content2: Content) -> bool:
+    def _is_same_attr(
+        content1: Content, 
+        content2: Content, 
+        attr: str, 
+        diff_tolerance: int | float
+    ) -> bool:
         """
-        Check whether two contents belong to the same block.
-
+        Evaluate whether same attr by checking the provided data.
+        
         Args:
-            content1 (Content): First content item.
-            content2 (Content): Second content item.
-
+            content1 (Content): Content1 used by the function logic.
+            content2 (Content): Content2 used by the function logic.
+            attr (str): Attr used by the function logic.
+            diff_tolerance (int | float): Diff tolerance used by the function logic.
+        
         Returns:
-            bool: True when block identifiers match.
+            bool: Result produced by the function logic.
         """
 
-        content1_block_id = content1.block.id
-        content2_block_id = content2.block.id
+        get_attr = attrgetter(attr)
+        content1_page = content1.page
+        content2_page = content2.page
+        content1_attr = get_attr(content1)
+        content2_attr = get_attr(content2)
 
-        return content1_block_id == content2_block_id
+        return (
+            content1_page == content2_page
+            and abs(content1_attr - content2_attr) <= diff_tolerance
+        )
     
     @staticmethod
     def _is_same_row(content1: Content, content2: Content, yo_diff_tolerance: float) -> bool:
         """
-        Check whether two contents share the same row within a tolerance.
-
+        Evaluate whether same row by checking the provided data.
+        
         Args:
-            content1 (Content): First content item.
-            content2 (Content): Second content item.
-            yo_diff_tolerance (float): Allowed vertical offset.
-
+            content1 (Content): Content1 used by the function logic.
+            content2 (Content): Content2 used by the function logic.
+            yo_diff_tolerance (float): Yo diff tolerance used by the function logic.
+        
         Returns:
-            bool: True when page matches and vertical gap is within tolerance.
+            bool: Result produced by the function logic.
         """
 
         content1_page_num = content1.page.number
@@ -1069,24 +1083,6 @@ class PDFContents(list[Content]):
             content1_page_num == content2_page_num
             and abs(content1_yo - content2_yo) <= yo_diff_tolerance
         )
-    
-    @staticmethod
-    def _is_same_line(content: Content, previous_content: Content) -> bool:
-        """
-        Check whether two contents belong to the same line.
-
-        Args:
-            content (Content): Current content item.
-            previous_content (Content): Previous content item.
-
-        Returns:
-            bool: True when line identifiers match.
-        """
-
-        content_line_id = int(content.line.id)
-        previous_content_line_id = int(previous_content.line.id)
-
-        return content_line_id == previous_content_line_id
 
     @staticmethod
     def _create_content_by_sequential(
@@ -1094,14 +1090,14 @@ class PDFContents(list[Content]):
         new_content_id: int
     ) -> Content:
         """
-        Create a new content item by merging sequential spans.
-
+        Create content by sequential by composing values from the inputs.
+        
         Args:
-            sequencial_contents (list[Content]): Contents to be merged.
-            new_content_id (int): Identifier for the new content.
-
+            sequencial_contents (list[Content]): Sequencial contents used by the function logic.
+            new_content_id (int): New content id used by the function logic.
+        
         Returns:
-            Content: Aggregated content covering the merged spans.
+            Content: Result produced by the function logic.
         """
 
         joined_content_line = sequencial_contents[0].line
@@ -1118,7 +1114,8 @@ class PDFContents(list[Content]):
                 content.text
                 for content in sequencial_contents
             ]
-        )
+        ).strip()
+
         joined_content_number = min([content.number for content in sequencial_contents])
         joined_content_xo = min([content.xo for content in sequencial_contents])
         joined_content_yo = min([content.yo for content in sequencial_contents])

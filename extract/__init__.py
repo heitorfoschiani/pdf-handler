@@ -1,41 +1,48 @@
 import fitz
 import re
+from pathlib import Path
 
-from pdf_contents import Page, Block, Line, Content, PDFContents
+from .contents import (
+    Page, 
+    Block, 
+    Line, 
+    Content, 
+    PDFContents
+)
 
 
 class PDFExtractor:
-    def __init__(self, pdf_file_path: str) -> None:
-        """
-        Load the PDF file and prepare extraction caches.
+    """
+    Extract structured texts and content blocks from PDF statement files.
+    """
 
+    def __init__(self, pdf_file_path: str | Path) -> None:
+        """
+        Initialize the instance by assigning the provided values.
+        
         Args:
-            pdf_file_path (str): Path to the PDF file.
+            pdf_file_path (str | Path): Path to the PDF file.
         """
 
-        self.__pdf_file_path = pdf_file_path
+        self.__pdf_file_path = Path(pdf_file_path)
         self.__doc: fitz.Document = self._extract_pdf_doc()
 
         self.__texts_cache: list[str] | None = None
-
-    @property
-    def pdf_file_path(self) -> str:
-        """
-        Return the stored PDF path.
-
-        Returns:
-            str: Input PDF location.
-        """
-
-        return self.__pdf_file_path
+        self.__contents_cache: PDFContents | None = None
     
-    def extract_contents(self) -> PDFContents:
+    def extract_contents(self, use_cache: bool = True) -> PDFContents | None:
         """
-        Parse the PDF into structured content objects.
-
+        Extract contents by processing the available inputs.
+        
+        Args:
+            use_cache (bool): Use cache used by the function logic.
+        
         Returns:
-            PDFContents: All text spans wrapped in helper classes.
+            PDFContents | None: Result produced by the function logic.
         """
+
+        if use_cache and self.__contents_cache:
+            return self.__contents_cache
 
         doc = self.__doc
 
@@ -116,20 +123,27 @@ class PDFExtractor:
 
                 block_id += 1
 
-        return PDFContents(contents)
+        if contents:
+            pdf_contents = PDFContents(contents)
+        else:
+            pdf_contents = None
+
+        self.__contents_cache = pdf_contents
+
+        return pdf_contents
     
     def extract_texts(
         self, 
         use_cache: bool = True
-    ) -> list[str]:
+    ) -> list[str] | None:
         """
-        Collect raw text lines from the PDF, optionally using cache.
-
+        Extract texts by processing the available inputs.
+        
         Args:
-            use_cache (bool): Reuse previously extracted texts.
-
+            use_cache (bool): Use cache used by the function logic.
+        
         Returns:
-            list[str]: Non-empty text lines.
+            list[str] | None: Result produced by the function logic.
         """
 
         if use_cache and self.__texts_cache:
@@ -147,6 +161,9 @@ class PDFExtractor:
                 if stripped_text:
                     texts.append(stripped_text)
 
+        if not texts:
+            texts = None
+
         self.__texts_cache = texts
 
         return texts
@@ -160,11 +177,10 @@ class PDFExtractor:
         """
 
         file_path = self.__pdf_file_path
-
-        if not file_path.lower().endswith(".pdf"):
+        if file_path.suffix.lower() != ".pdf":
             raise Exception("Unsupported file extension.")
 
-        doc = fitz.open(file_path)
+        doc = fitz.open(str(file_path))
         if doc.needs_pass:
             doc = self._authenticate_doc(doc)
         
@@ -172,16 +188,19 @@ class PDFExtractor:
     
     def _authenticate_doc(self, doc: fitz.Document) -> fitz.Document:
         """
-        Unlock a password-protected PDF using the filename token.
-
+        Authenticate doc by applying the function logic.
+        
         Args:
-            doc (fitz.Document): Document requiring authentication.
-
+            doc (fitz.Document): Doc used by the function logic.
+        
         Returns:
-            fitz.Document: Authenticated PDF document.
+            fitz.Document: Result produced by the function logic.
         """
 
-        password_match = re.search(r"#([^#]+)#(?=[^#]*$)", self.__pdf_file_path)
+        password_match = re.search(
+            r"#([^#]+)#(?=[^#]*$)", 
+            self.__pdf_file_path.name
+        )
         if not password_match:
             raise ValueError("No password found between '#' in the filename.")
 
@@ -193,25 +212,25 @@ class PDFExtractor:
         return doc
     
     @staticmethod
-    def _format_text(text: str) -> str | None:
+    def _format_text(text: str | None) -> str | None:
         """
-        Normalize span text by trimming and collapsing spacing.
-
+        Format text by applying the transformation rules.
+        
         Args:
-            text (str): Raw span text.
-
+            text (str): Text used by the function logic.
+        
         Returns:
-            str | None: Cleaned text or None when empty.
+            str | None: Result produced by the function logic.
         """
 
-        if not text:
+        if text is None:
             return None
 
-        text = text.strip()
         text = text.replace("\u2060", " ")
         text = text.replace("\n", " ")
         text = text.replace("\xa0", " ")
         text = text.replace("\t", " ")
         text = re.sub(r" {2,}", " ", text)
+        text = text.strip()
 
         return text
